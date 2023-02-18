@@ -13,6 +13,35 @@ class HomeScreen extends StatelessWidget {
       animation: _controller,
       builder: (context, snapshot) {
         return Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            onTap: (index) {
+              
+            },
+            currentIndex: 0,
+            items: [
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset('assets/icons/Lock.svg'),
+                label: '',
+                backgroundColor: Colors.black
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset('assets/icons/Charge.svg'),
+                label: '',
+                backgroundColor: Colors.black
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset('assets/icons/Temp.svg'),
+                label: '',
+                backgroundColor: Colors.black
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset('assets/icons/Tyre.svg'),
+                label: '',
+                backgroundColor: Colors.black
+              ),
+            ],
+          ),
           body: SafeArea(
             child: LayoutBuilder(
               builder: (context, constrains) {
