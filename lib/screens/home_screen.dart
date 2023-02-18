@@ -1,4 +1,5 @@
 import 'package:animated_car/components/door_lock.dart';
+import 'package:animated_car/components/tesla_bottom_navigationbar.dart';
 import 'package:animated_car/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,34 +14,9 @@ class HomeScreen extends StatelessWidget {
       animation: _controller,
       builder: (context, snapshot) {
         return Scaffold(
-          bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            onTap: (index) {
-              
-            },
-            currentIndex: 0,
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset('assets/icons/Lock.svg'),
-                label: '',
-                backgroundColor: Colors.black
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset('assets/icons/Charge.svg'),
-                label: '',
-                backgroundColor: Colors.black
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset('assets/icons/Temp.svg'),
-                label: '',
-                backgroundColor: Colors.black
-              ),
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset('assets/icons/Tyre.svg'),
-                label: '',
-                backgroundColor: Colors.black
-              ),
-            ],
+          bottomNavigationBar: TeslaBottomNavigationBar(
+            selectedTab: 0,
+            onTap: (index) {},
           ),
           body: SafeArea(
             child: LayoutBuilder(
@@ -49,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.10),
+                      padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.11),
                       child: SvgPicture.asset(
                         'assets/icons/Car.svg',
                         width: double.infinity,
