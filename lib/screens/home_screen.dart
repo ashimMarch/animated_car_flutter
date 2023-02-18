@@ -1,4 +1,4 @@
-import 'package:animated_car/constants.dart';
+import 'package:animated_car/components/door_lock.dart';
 import 'package:animated_car/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,27 +29,30 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Positioned(
                       right: constrains.maxWidth*0.05,
-                      child: GestureDetector(
-                        onTap: _controller.updateRightDoorLock,
-                        child: AnimatedSwitcher(
-                          duration: defaultDuration,
-                          switchInCurve: Curves.easeInOutBack,
-                          transitionBuilder: (child, animation) => ScaleTransition(
-                            scale: animation,
-                            child: child,
-                          ),
-                          child: _controller.isRightDoorLocked 
-                            ? SvgPicture.asset(
-                              'assets/icons/door_lock.svg',
-                              //  if we do not add key it will show no animation. bcos both of them are same widget.
-                              //  flutter think they are same.
-                              key: const ValueKey('lock'),
-                            )
-                            : SvgPicture.asset(
-                              'assets/icons/door_unlock.svg',
-                              key: const ValueKey('unlock'),
-                            ),
-                        ),
+                      child: DoorLock(
+                        isLock: _controller.isRightDoorLocked,
+                        press: _controller.updateRightDoorLock, 
+                      ),
+                    ),
+                    Positioned(
+                      left: constrains.maxWidth*0.05,
+                      child: DoorLock(
+                        isLock: _controller.isLeftDoorLocked,
+                        press: _controller.updateLeftDoorLock, 
+                      ),
+                    ),
+                    Positioned(
+                      top: constrains.maxWidth*0.05,
+                      child: DoorLock(
+                        isLock: _controller.isBonnetLock,
+                        press: _controller.updateBonnetDoorLock, 
+                      ),
+                    ),
+                    Positioned(
+                      bottom: constrains.maxWidth*0.05,
+                      child: DoorLock(
+                        isLock: _controller.isTrunkLock,
+                        press: _controller.updateTrunkDoorLock, 
                       ),
                     ),
                   ],
