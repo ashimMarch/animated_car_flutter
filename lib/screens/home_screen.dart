@@ -29,13 +29,26 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Positioned(
                       right: constrains.maxWidth*0.05,
-                      child: AnimatedSwitcher(
-                        duration: defaultDuration,
-                        child: GestureDetector(
-                          onTap: _controller.updateRightDoorLock,
+                      child: GestureDetector(
+                        onTap: _controller.updateRightDoorLock,
+                        child: AnimatedSwitcher(
+                          duration: defaultDuration,
+                          switchInCurve: Curves.easeInOutBack,
+                          transitionBuilder: (child, animation) => ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          ),
                           child: _controller.isRightDoorLocked 
-                            ? SvgPicture.asset('assets/icons/door_lock.svg')
-                            : SvgPicture.asset('assets/icons/door_unlock.svg'),
+                            ? SvgPicture.asset(
+                              'assets/icons/door_lock.svg',
+                              //  if we do not add key it will show no animation. bcos both of them are same widget.
+                              //  flutter think they are same.
+                              key: const ValueKey('lock'),
+                            )
+                            : SvgPicture.asset(
+                              'assets/icons/door_unlock.svg',
+                              key: const ValueKey('unlock'),
+                            ),
                         ),
                       ),
                     ),
