@@ -8,22 +8,22 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: LayoutBuilder(// we need to know how much width and height available for this car after taken AppBar and NavBar space
+        child: LayoutBuilder(
           builder: (context, constrains) {
-            print('constrains.maxHeight : ${constrains.maxHeight} ');
-            print('constrains.minHeight : ${constrains.minHeight}');
-            print('constrains.maxWidth : ${constrains.maxWidth}');
-            print('constrains.minWidth : ${constrains.minWidth}');
-            print('\n ${constrains.maxHeight*0.1}\n');
             return Stack(
+              alignment: Alignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.1),
+                  padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.10),
                   child: SvgPicture.asset(
                     'assets/icons/Car.svg',
                     width: double.infinity,
                     height: double.infinity,
                   ),
+                ),
+                Positioned(
+                  right: constrains.maxWidth*0.05,
+                  child: SvgPicture.asset('assets/icons/door_lock.svg'),
                 ),
               ],
             );
