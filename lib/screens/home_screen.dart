@@ -12,11 +12,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (context, snapshot) {
+      builder: (context, _) {
         return Scaffold(
           bottomNavigationBar: TeslaBottomNavigationBar(
-            selectedTab: 0,
-            onTap: (index) {},
+            selectedTab: _controller.selectedBottomTab,
+            onTap: (index) {
+              _controller.onBottomNavigationTabChange(index);
+            },
           ),
           body: SafeArea(
             child: LayoutBuilder(
@@ -25,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.11),
+                      padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.1),
                       child: SvgPicture.asset(
                         'assets/icons/Car.svg',
                         width: double.infinity,
@@ -47,14 +49,14 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      top: constrains.maxWidth*0.05,
+                      top: constrains.maxHeight*0.13,
                       child: DoorLock(
                         isLock: _controller.isBonnetLock,
                         press: _controller.updateBonnetDoorLock, 
                       ),
                     ),
                     Positioned(
-                      bottom: constrains.maxWidth*0.05,
+                      bottom: constrains.maxHeight*0.17,
                       child: DoorLock(
                         isLock: _controller.isTrunkLock,
                         press: _controller.updateTrunkDoorLock, 

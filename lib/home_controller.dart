@@ -3,6 +3,12 @@ import 'package:flutter/cupertino.dart';
 class HomeController extends ChangeNotifier{
   // we use HomeCotroller for logical part
 
+  int selectedBottomTab = 0;
+  void onBottomNavigationTabChange(int index){
+    selectedBottomTab = index;
+    notifyListeners();
+  }
+
   bool isRightDoorLocked = true;
   bool isLeftDoorLocked = true;
   bool isBonnetLock = true;
