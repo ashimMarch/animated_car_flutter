@@ -1,5 +1,6 @@
 import 'package:animated_car/components/door_lock.dart';
 import 'package:animated_car/components/tesla_bottom_navigationbar.dart';
+import 'package:animated_car/constants.dart';
 import 'package:animated_car/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -34,11 +35,16 @@ class HomeScreen extends StatelessWidget {
                         height: double.infinity,
                       ),
                     ),
-                    Positioned(
-                      right: constrains.maxWidth*0.05,
-                      child: DoorLock(
-                        isLock: _controller.isRightDoorLocked,
-                        press: _controller.updateRightDoorLock, 
+                    AnimatedPositioned(
+                      duration: defaultDuration,
+                      right: _controller.selectedBottomTab == 0 ? constrains.maxWidth*0.05 : constrains.maxWidth*0.5,
+                      child: AnimatedOpacity(
+                        duration: defaultDuration,
+                        opacity: _controller.selectedBottomTab == 0 ? 1 : 0,
+                        child: DoorLock(
+                          isLock: _controller.isRightDoorLocked,
+                          press: _controller.updateRightDoorLock, 
+                        ),
                       ),
                     ),
                     Positioned(
