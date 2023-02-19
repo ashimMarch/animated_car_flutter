@@ -1,3 +1,4 @@
+import 'package:animated_car/components/battery_status.dart';
 import 'package:animated_car/components/door_lock.dart';
 import 'package:animated_car/components/tesla_bottom_navigationbar.dart';
 import 'package:animated_car/constants.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   late AnimationController _batteryAnimationController;
   late Animation<double> _animationBattery;
+  late Animation<double> _animationBatteryStatus;
 
   void setupBatteryAnimation(){
     _batteryAnimationController = AnimationController(
@@ -24,10 +26,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       duration: const Duration(milliseconds: 600)
     );
     _animationBattery = CurvedAnimation(
-      parent: _batteryAnimationController, 
-      // so this animation start at 0 and end on half
-      // means after 300 milliseconds [total duration is 600]
+      parent: _batteryAnimationController,
+      // Here the animaion end on 0.5
+      // it ends on 300 milliseconds
       curve: const Interval(0.0, 0.5),
+    );
+    _animationBatteryStatus = CurvedAnimation(
+      parent: _batteryAnimationController, 
+      // After a delay we start the animation
+      // after 60 millisecons delay it start
+      // so it start at 360 and end on 600 milliseconds
+      curve: const Interval(0.6, 1)
     );
   }
   @override
@@ -47,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     return AnimatedBuilder(
       animation: Listenable.merge([_controller,_batteryAnimationController]),
       builder: (context, _) {
-        print('${_animationBattery.value} \n');
         return Scaffold(
           bottomNavigationBar: TeslaBottomNavigationBar(
             selectedTab: _controller.selectedBottomTab,
@@ -122,6 +130,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                     ),
+
+                    // Battery
                     Opacity(
                       opacity: _animationBattery.value,
                       child: SvgPicture.asset(
@@ -129,6 +139,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         width: constrains.maxWidth*0.45,
                       ),
                     ),
+                    Opacity(
+                      opacity: _animationBatteryStatus.value,
+                      child: BatteryStatus(constrains: constrains,),
+                    )
                   ],
                 );
               }
