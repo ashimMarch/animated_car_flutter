@@ -139,9 +139,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         width: constrains.maxWidth*0.45,
                       ),
                     ),
-                    Opacity(
-                      opacity: _animationBatteryStatus.value,
-                      child: BatteryStatus(constrains: constrains,),
+                    Positioned(
+                      // Here the animation value start at 0 & end on 1
+                      top: 50*(1-_animationBatteryStatus.value),
+                      height: constrains.maxHeight,
+                      width: constrains.maxWidth,
+                      child: Opacity(
+                        opacity: _animationBatteryStatus.value,
+                        child: BatteryStatus(constrains: constrains,),
+                      ),
                     )
                   ],
                 );
