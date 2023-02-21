@@ -13,12 +13,17 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+//  we have 2 animation controller but we use SingleTickerProviderStateMixin
+//Let's change it to TickerProviderStateMixin, thwn we can use more animation controller
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final HomeController _controller = HomeController();
 
   late AnimationController _batteryAnimationController;
   late Animation<double> _animationBattery;
   late Animation<double> _animationBatteryStatus;
+
+  late AnimationController _tempAnimationController;
+  late Animation<double> _animationCarShift;
 
   void setupBatteryAnimation(){
     _batteryAnimationController = AnimationController(
@@ -39,14 +44,28 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       curve: const Interval(0.6, 1)
     );
   }
+  void setupTempAnimation(){
+    _tempAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500)
+    );
+    //  Let's define animation for car shift
+    _animationCarShift = CurvedAnimation(
+      // at first we will wait, so that battery status animation can complete
+      parent: _tempAnimationController, curve: const Interval(0.2, 0.4)
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     setupBatteryAnimation();
+    setupTempAnimation();
   }
   @override
   void dispose() {
     _batteryAnimationController.dispose();
+    _tempAnimationController.dispose();
     super.dispose();
   }
 
@@ -54,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: Listenable.merge([_controller,_batteryAnimationController]),
+      animation: Listenable.merge([_controller,_batteryAnimationController,_tempAnimationController]),
       builder: (context, _) {
         return Scaffold(
           bottomNavigationBar: TeslaBottomNavigationBar(
@@ -65,6 +84,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               } else if(_controller.selectedBottomTab == 1 && index != 1){
                 _batteryAnimationController.reverse(from: 0.7);
               }
+              if(index == 2){
+                _tempAnimationController.forward();
+              }else if(_controller.selectedBottomTab == 2 && index != 2){
+                  _tempAnimationController.reverse(from: 0.4);
+              }
               _controller.onBottomNavigationTabChange(index);
             },
           ),
@@ -74,12 +98,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 return Stack(
                   alignment: Alignment.center,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.1),
-                      child: SvgPicture.asset(
-                        'assets/icons/Car.svg',
-                        width: double.infinity,
-                        height: double.infinity,
+                    SizedBox(//  for taking all space 
+                      height: constrains.maxHeight,
+                      width: constrains.maxWidth,
+                    ),
+
+                    Positioned(
+                      left: constrains.maxWidth*0.5*_animationCarShift.value,
+                      width: constrains.maxWidth,
+                      height: constrains.maxHeight,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: constrains.maxHeight*0.1),
+                        child: SvgPicture.asset(
+                          'assets/icons/Car.svg',
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
                       ),
                     ),
                     AnimatedPositioned(
@@ -149,6 +183,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         child: BatteryStatus(constrains: constrains,),
                       ),
                     )
+
                   ],
                 );
               }
