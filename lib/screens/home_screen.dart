@@ -1,5 +1,6 @@
 import 'package:animated_car/components/battery_status.dart';
 import 'package:animated_car/components/door_lock.dart';
+import 'package:animated_car/components/temp_details.dart';
 import 'package:animated_car/components/tesla_bottom_navigationbar.dart';
 import 'package:animated_car/constants.dart';
 import 'package:animated_car/home_controller.dart';
@@ -13,8 +14,6 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-//  we have 2 animation controller but we use SingleTickerProviderStateMixin
-//Let's change it to TickerProviderStateMixin, thwn we can use more animation controller
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final HomeController _controller = HomeController();
 
@@ -24,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   late AnimationController _tempAnimationController;
   late Animation<double> _animationCarShift;
+  late Animation<double> _animationTempShowInfo;
+  late Animation<double> _animationCoolGlow;
 
   void setupBatteryAnimation(){
     _batteryAnimationController = AnimationController(
@@ -32,15 +33,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
     _animationBattery = CurvedAnimation(
       parent: _batteryAnimationController,
-      // Here the animaion end on 0.5
-      // it ends on 300 milliseconds
       curve: const Interval(0.0, 0.5),
     );
     _animationBatteryStatus = CurvedAnimation(
-      parent: _batteryAnimationController, 
-      // After a delay we start the animation
-      // after 60 millisecons delay it start
-      // so it start at 360 and end on 600 milliseconds
+      parent: _batteryAnimationController,
       curve: const Interval(0.6, 1)
     );
   }
@@ -49,10 +45,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(milliseconds: 1500)
     );
-    //  Let's define animation for car shift
     _animationCarShift = CurvedAnimation(
-      // at first we will wait, so that battery status animation can complete
       parent: _tempAnimationController, curve: const Interval(0.2, 0.4)
+    );
+    _animationTempShowInfo = CurvedAnimation(
+      parent: _tempAnimationController, curve: const Interval(0.45, 0.65)
+    );
+    _animationCoolGlow = CurvedAnimation(
+      parent: _tempAnimationController,
+       curve: const Interval(0.7, 1),
     );
   }
 
@@ -182,8 +183,35 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         opacity: _animationBatteryStatus.value,
                         child: BatteryStatus(constrains: constrains,),
                       ),
-                    )
+                    ),
 
+                    //  Temp
+                    Positioned(
+                      top: 60*(1-_animationCarShift.value),
+                      width: constrains.maxWidth,
+                      height: constrains.maxHeight,
+                      child: Opacity(
+                        opacity: _animationTempShowInfo.value,
+                        child: TempDetails(controller: _controller),
+                      ),
+                    ),
+                    Positioned(
+                      right: -180*(1-_animationCoolGlow.value),
+                      child: AnimatedSwitcher(
+                        duration: defaultDuration,
+                        child: _controller.isCoolSelected 
+                        ? Image.asset(
+                          'assets/images/Cool_glow_2.png',
+                          width: 200,
+                          key: UniqueKey(),
+                        )
+                        : Image.asset(
+                          'assets/images/Hot_glow_4.png',
+                          width: 200,
+                          key: UniqueKey(),
+                        ),
+                      ),
+                    ),
                   ],
                 );
               }
