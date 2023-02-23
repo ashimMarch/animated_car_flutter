@@ -7,6 +7,8 @@ import 'package:animated_car/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../components/tyres.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -90,6 +92,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               }else if(_controller.selectedBottomTab == 2 && index != 2){
                   _tempAnimationController.reverse(from: 0.4);
               }
+              _controller.showTyreController(index);
               _controller.onBottomNavigationTabChange(index);
             },
           ),
@@ -212,6 +215,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
+
+                    //  Tyre section
+                    if(_controller.isShowTyre) ...tyres(constrains)
                   ],
                 );
               }

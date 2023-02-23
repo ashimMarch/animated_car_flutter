@@ -36,4 +36,15 @@ class HomeController extends ChangeNotifier{
     isCoolSelected = !isCoolSelected;
     notifyListeners();
   }
+
+  bool isShowTyre = false;
+  //  once user on this tyre tab we want to show the tyre
+  //  let's define this method on the bottom navigation
+  //  we want to show the tyres a little bit later
+  void showTyreController(int index){
+    Future.delayed(const Duration(milliseconds: 400),() {
+      isShowTyre = index == 3 ? true : false ;
+      notifyListeners();      
+    },);
+  }
 }

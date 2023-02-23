@@ -49,7 +49,7 @@ class TempDetails extends StatelessWidget {
                 icon: const Icon(Icons.arrow_drop_up,size: 48,)
               ),              
               const Text(
-                '29'+'\u2103',
+                '29\u2103',
                 style: TextStyle(fontSize: 86),
               ),
               IconButton(
@@ -69,7 +69,7 @@ class TempDetails extends StatelessWidget {
                 children: [
                   const Text('INSIDE'),
                   Text(
-                    '20'+'\u2103',
+                    '20\u2103',
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ],
@@ -80,7 +80,7 @@ class TempDetails extends StatelessWidget {
                 children: [
                   const Text('OUTSIDE',style: TextStyle(color: Colors.white54),),
                   Text(
-                    '35'+'\u2103',
+                    '35\u2103',
                     style: Theme.of(context).textTheme.headline5!.copyWith(color: Colors.white54),
                   ),
                 ],
