@@ -217,7 +217,55 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
 
                     //  Tyre section
-                    if(_controller.isShowTyre) ...tyres(constrains)
+                    if(_controller.isShowTyre) ...tyres(constrains),
+                    GridView.builder(
+                      itemCount: 4,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: defaultPadding,
+                        crossAxisSpacing: defaultPadding,
+                        childAspectRatio: constrains.maxWidth / constrains.maxHeight,
+                      ), 
+                      itemBuilder: (context, index) => Container(
+                        padding: const EdgeInsets.all(defaultPadding),
+                        decoration:  BoxDecoration(
+                          color: Colors.white10,
+                          border: Border.all(color: primaryColor),
+                          borderRadius: const BorderRadius.all(Radius.circular(6))
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                text: '23.6',
+                                style: Theme.of(context).textTheme.headline4!.copyWith(fontWeight: FontWeight.w600,color: Colors.white),
+                                children: const [
+                                  TextSpan(
+                                    text: 'psi',
+                                    style: TextStyle(fontSize: 24)
+                                  )
+                                ]
+                              )
+                            ),
+                            const SizedBox(height: defaultPadding,),
+                            const Text(
+                              '41\u2103',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            const Spacer(),
+                            Text(
+                              'LOW',
+                              style: Theme.of(context).textTheme.headline3!.copyWith(color: Colors.white,fontWeight: FontWeight.w600),
+                            ),
+                            const Text(
+                              'PRESSURE',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
+                        ),                        
+                      ),
+                    ),
                   ],
                 );
               }
