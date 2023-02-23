@@ -4,9 +4,11 @@ import 'package:animated_car/components/temp_details.dart';
 import 'package:animated_car/components/tesla_bottom_navigationbar.dart';
 import 'package:animated_car/constants.dart';
 import 'package:animated_car/home_controller.dart';
+import 'package:animated_car/models/tyre_psi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../components/tyre_psi_card.dart';
 import '../components/tyres.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -220,50 +222,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     if(_controller.isShowTyre) ...tyres(constrains),
                     GridView.builder(
                       itemCount: 4,
+                      physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: defaultPadding,
                         crossAxisSpacing: defaultPadding,
                         childAspectRatio: constrains.maxWidth / constrains.maxHeight,
                       ), 
-                      itemBuilder: (context, index) => Container(
-                        padding: const EdgeInsets.all(defaultPadding),
-                        decoration:  BoxDecoration(
-                          color: Colors.white10,
-                          border: Border.all(color: primaryColor),
-                          borderRadius: const BorderRadius.all(Radius.circular(6))
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text.rich(
-                              TextSpan(
-                                text: '23.6',
-                                style: Theme.of(context).textTheme.headline4!.copyWith(fontWeight: FontWeight.w600,color: Colors.white),
-                                children: const [
-                                  TextSpan(
-                                    text: 'psi',
-                                    style: TextStyle(fontSize: 24)
-                                  )
-                                ]
-                              )
-                            ),
-                            const SizedBox(height: defaultPadding,),
-                            const Text(
-                              '41\u2103',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            const Spacer(),
-                            Text(
-                              'LOW',
-                              style: Theme.of(context).textTheme.headline3!.copyWith(color: Colors.white,fontWeight: FontWeight.w600),
-                            ),
-                            const Text(
-                              'PRESSURE',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),                        
+                      itemBuilder: (context, index) => TyrePsiCard(
+                        isBottomTwoTyre: index > 1,
+                        tyrePsi: demoPsiList[index],
                       ),
                     ),
                   ],
@@ -276,3 +244,5 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 }
+
+
