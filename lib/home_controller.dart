@@ -47,4 +47,17 @@ class HomeController extends ChangeNotifier{
       notifyListeners();      
     },);
   }
+
+  bool isShowTyreStatus = false;
+  void tyreStatusController(int index) {
+    if(selectedBottomTab != 3 && index == 3){
+      isShowTyreStatus = true;
+      notifyListeners();      
+    }else{
+      Future.delayed(const Duration(milliseconds: 400),() {
+        isShowTyreStatus = false;
+        notifyListeners();  
+      },);
+    }  
+  }
 }
